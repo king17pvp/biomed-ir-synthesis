@@ -1,0 +1,13 @@
+import os
+from openai import OpenAI
+from dotenv import load_dotenv
+from tools.api import *
+load_dotenv()
+deekseek_api_key = os.getenv("DEEKSEEK_KEY")
+
+
+API = DeepSeekAPI(deekseek_api_key)
+document = "In order to throw light on the problems related to the magnitude and the possibility of maintaining pressor response in the case of bilateral carotid occlusion (BCO), acute experiments were carried out on heparinized cats in chloralose-urethane narcosis and spontaneous respiration. The perfusion pressure in a hind leg autoperfused with a roller pump with a constant flow and the arterial blood pressure were recorded electromanometrically. A study was made of the changes taking place under the effect of BCO in the normal animal, in animals in a haemorrhagic state, after pharmacological alpha-adrenergic blockade, haemorrhage after alpha-adrenergic blockade, retransfusion of blood + alpha-adrenergic blocking agent and after local application of 0.01 papaverine. It was established that some of the factors determining the haemodynamic state of the organism, such as: blood volume, arterial pressure, vascular resistance, cardiac output, etc., are of great significance for the realization of the pressor response to BCO, but the haemodynamic state of the animal before the occlusion and the interactions between the abovementioned factors are decisive for the form, magnitude and maintenance of the pressor response in BCO."
+
+queries = API.generate_queries(document=document)
+print(queries)
