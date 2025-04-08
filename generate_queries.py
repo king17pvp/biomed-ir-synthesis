@@ -32,7 +32,8 @@ def main(args):
             continue
         input_path = os.path.join(args.input_directory, corpus_filename)
         output_path = os.path.join(args.output_directory, corpus_filename.replace(".txt", "queries.json"))
-
+        global data
+        data = []
         documents = []
         metadata = []
         with open(input_path, 'r', encoding='utf-8') as fr:
@@ -47,12 +48,15 @@ def main(args):
                 if len(document) > args.max_documents:
                     document = document[:args.max_documents]
             documents.append((line[0], document))
-        with ThreadPoolExecutor(max_workers=8) as executor:
-            futures = [executor.submit(process_line, line) for line in tqdm.tqdm(documents)]
-            for future in tqdm.tqdm(as_completed(futures), total=len(futures)):
-                result = future.result()
-                if result:
-                    data.append(result)
+        for line in tqdm.tqdm(documents):
+            process_line(line)
+                
+        # with ThreadPoolExecutor(max_workers=8) as executor:
+        #     futures = [executor.submit(process_line, line) for line in tqdm.tqdm(documents)]
+        #     for future in tqdm.tqdm(as_completed(futures), total=len(futures)):
+        #         result = future.result()
+        #         if result:
+        #             data.append(result)
         # for line in tqdm.tqdm(documents):
         #     try:
         #         id, document = line
