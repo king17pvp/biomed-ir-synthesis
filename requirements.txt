@@ -4,3 +4,10 @@ elasticsearch==7.9.1
 faiss-cpu
 beir
 sentence-transformers
+torch==2.7.0
+torchvision==0.22.0
+sentence-transformers
+accelerate
+datasets
+kagglehub
+wandb
