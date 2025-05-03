@@ -48,15 +48,15 @@ def main(args):
                 if len(document) > args.max_documents:
                     document = document[:args.max_documents]
             documents.append((line[0], document))
-        for line in tqdm.tqdm(documents):
-            process_line(line)
+        # for line in tqdm.tqdm(documents):
+        #     process_line(line)
                 
-        # with ThreadPoolExecutor(max_workers=8) as executor:
-        #     futures = [executor.submit(process_line, line) for line in tqdm.tqdm(documents)]
-        #     for future in tqdm.tqdm(as_completed(futures), total=len(futures)):
-        #         result = future.result()
-        #         if result:
-        #             data.append(result)
+        with ThreadPoolExecutor(max_workers=8) as executor:
+            futures = [executor.submit(process_line, line) for line in tqdm.tqdm(documents)]
+            for future in tqdm.tqdm(as_completed(futures), total=len(futures)):
+                result = future.result()
+                if result:
+                    data.append(result)
         # for line in tqdm.tqdm(documents):
         #     try:
         #         id, document = line
