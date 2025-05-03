@@ -60,7 +60,8 @@ def evaluate(
         corpus, queries, qrels = GenericDataLoader(data_folder=data_path).load(split="test")
 
         bm25_model = BM25(index_name=dataset, hostname=hostname, initialize=initialize)
-        dense_results = EvaluateRetrieval(dense_model, score_function= score_function, k_values=[top_k])
+        dense_retriever = EvaluateRetrieval(dense_model, score_function= score_function, k_values=[top_k])
+        dense_results = dense_retriever.retrieve(corpus, queries)
         bm25_results = bm25_model.search(corpus, queries, top_k, score_function)
 
         rrf_results = reciprocal_rank_fusion([bm25_results, dense_results])
