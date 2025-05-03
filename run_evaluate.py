@@ -12,7 +12,6 @@ from beir.reranking.models import CrossEncoder
 from beir.datasets.data_loader import GenericDataLoader
 from beir.retrieval.search.lexical import BM25Search as BM25
 from beir.retrieval.evaluation import EvaluateRetrieval
-from beir.retrieval.search.dense import DenseRetrievealExactSearch as DRES
 from sentence_transformers import SentenceTransformer
 
 score_function = "cos_sim"
