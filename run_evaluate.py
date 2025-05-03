@@ -9,6 +9,7 @@ from beir import util, LoggingHandler
 from beir.retrieval import models
 from beir.reranking import Rerank
 from beir.reranking.models import CrossEncoder
+from beir.retrieval.search.dense import DenseRetrievalExactSearch as DRES
 from beir.datasets.data_loader import GenericDataLoader
 from beir.retrieval.search.lexical import BM25Search as BM25
 from beir.retrieval.evaluation import EvaluateRetrieval
