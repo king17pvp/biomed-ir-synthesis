@@ -93,4 +93,4 @@ def evaluate(
 
 if __name__ == "__main__":
     args = parse_args()
-    evaluate(args.biencoder_path, args.crossencoder_path, args.top_k)
+    evaluate(args.biencoder_model_path, args.crossencoder_model_path, args.top_k)
