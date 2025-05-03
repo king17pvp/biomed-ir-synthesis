@@ -4,7 +4,7 @@ import logging
 import pathlib
 import numpy as np
 
-from evaluate.utils import *
+from src.evaluate.utils import *
 from beir import util, LoggingHandler
 from beir.retrieval import models
 from beir.reranking import Rerank
