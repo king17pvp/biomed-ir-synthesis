@@ -31,27 +31,29 @@ def parse_args():
     )
 
     parser.add_argument(
-        "--biencoder_model_path", 
+        "--biencoder_model_name", 
         type=str, 
-        default="./ckpts/biencoder-checkpoints/checkpoint-pubmedbert",
-        help="Path to the SentenceTransformer (bi-encoder) model"
+        default="checkpoint-pubmedbert",
+        help="Name of the SentenceTransformer (bi-encoder) model (inside biomed-ir-synthesis/ckpts/)"
     )
 
     parser.add_argument(
-        "--crossencoder_model_path", 
+        "--crossencoder_model_name", 
         type=str, 
-        default="./ckpts/crossencoder-checkpoints/checkpoint-pubmedbert-10000",
-        help="Path to the CrossEncoder (reranker) model"
+        default="checkpoint-pubmedbert-10000",
+        help="Name of the CrossEncoder (reranker) model (inside biomed-ir-synthesis/ckpts/)"
     )
 
     return parser.parse_args()
 
 def evaluate(
-    dense_model_path = "./ckpts/biencoder-checkpoints/checkpoint-pubmedbert", 
-    reranker_model_path = "./ckpts/crossencoder-checkpoints/checkpoint-pubmedbert-10000", 
+    dense_model_name = "checkpoint-pubmedbert", 
+    reranker_model_name = "checkpoint-pubmedbert-10000", 
     top_k = 50
 ):
     datasets = ['trec-covid', 'nfcorpus', 'scifact', 'scidocs']
+    dense_model_path = f"./ckpts/biencoder-checkpoints/{dense_model_name}"
+    reranker_model_path = f"./ckpts/crossencoder-checkpoints/{reranker_model_name}"
     dense_model = models.SentenceBERT(dense_model_path)
     reranker = Rerank(CrossEncoder(reranker_model_path), batch_size=32)
     for dataset in datasets :
@@ -80,16 +82,11 @@ def evaluate(
         
         results_dir = os.path.join(".", "results")
         os.makedirs(results_dir, exist_ok=True)
-        print(f"NDCG@{top_k}: {ndcg}")
-        print(f"MAP@{top_k}: {_map}")
-        print(f"Recall@{top_k}: {recall}")
-        print(f"Precision@{top_k}: {precision}")
-        print(f"MRR@{top_k}: {mrr}")
-        # print(f"NDCG@{top_k}: {ndcg[top_k]:.2f}")
-        # print(f"MAP@{top_k}: {_map[top_k]:.2f}")
-        # print(f"Recall@{top_k}: {recall[top_k]:.2f}")
-        # print(f"Precision@{top_k}: {precision[top_k]:.2f}")
-        # print(f"MRR@{top_k}: {mrr[top_k]:.2f}")
+        print(f"NDCG@{top_k}: {ndcg[f'NDCG@{top_k}']}")
+        print(f"MAP@{top_k}: {_map[f'MAP@{top_k}']}")
+        print(f"Recall@{top_k}: {recall[f'Recall@{top_k}']}")
+        print(f"Precision@{top_k}: {precision[f'P@{top_k}']}")
+        print(f"MRR@{top_k}: {mrr[f'MRR@{top_k}']}")
 
         results_dir = os.path.join(".", "results")
         os.makedirs(results_dir, exist_ok=True)
@@ -100,4 +97,4 @@ def evaluate(
 
 if __name__ == "__main__":
     args = parse_args()
-    evaluate(args.biencoder_model_path, args.crossencoder_model_path, args.top_k)
+    evaluate(args.biencoder_model_name, args.crossencoder_model_name, args.top_k)
