@@ -52,7 +52,7 @@ def evaluate(
     top_k = 50
 ):
     datasets = ['trec-covid', 'nfcorpus', 'scifact', 'scidocs']
-    dense_model = models.SentenceBERT(SentenceTransformer(dense_model_path))
+    dense_model = models.SentenceBERT(dense_model_path)
     reranker = Rerank(CrossEncoder(reranker_model_path), batch_size=128)
     for dataset in datasets :
         url = f"https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/{dataset}.zip"
