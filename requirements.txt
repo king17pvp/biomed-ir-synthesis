@@ -1,2 +1,6 @@
 dotenv
 openai
+elasticsearch==7.9.1
+faiss-cpu
+beir
+sentence-transformers
