@@ -82,14 +82,18 @@ def evaluate(
         
         results_dir = os.path.join(".", "results")
         os.makedirs(results_dir, exist_ok=True)
+        with open(os.path.join(results_dir, f"{dense_model_name}-retriever-{reranker_model_name}-reranker.txt"), "w") as fw:
+            fw.write(f"NDCG@{top_k}: {ndcg[f'NDCG@{top_k}']}\n")
+            fw.write(f"MAP@{top_k}: {_map[f'MAP@{top_k}']}\n")
+            fw.write(f"Recall@{top_k}: {recall[f'Recall@{top_k}']}\n")
+            fw.write(f"Precision@{top_k}: {precision[f'P@{top_k}']}\n")
+            fw.write(f"MRR@{top_k}: {mrr[f'MRR@{top_k}']}\n")
         print(f"NDCG@{top_k}: {ndcg[f'NDCG@{top_k}']}")
         print(f"MAP@{top_k}: {_map[f'MAP@{top_k}']}")
         print(f"Recall@{top_k}: {recall[f'Recall@{top_k}']}")
         print(f"Precision@{top_k}: {precision[f'P@{top_k}']}")
         print(f"MRR@{top_k}: {mrr[f'MRR@{top_k}']}")
 
-        results_dir = os.path.join(".", "results")
-        os.makedirs(results_dir, exist_ok=True)
         with open(os.path.join(results_dir, f"{dataset}-ce-top{top_k}.txt"), "w") as f:
             for query_id in ce_results:
                 for doc_id, score in sorted(ce_results[query_id].items(), key=lambda x: -x[1]):
