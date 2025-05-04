@@ -54,12 +54,12 @@ def evaluate(
 ):
     results_dir = os.path.join(".", "results")
     os.makedirs(results_dir, exist_ok=True)
-    datasets = ['trec-covid', 'nfcorpus', 'scifact', 'scidocs']
+    datasets = ['bioasq', 'trec-covid', 'nfcorpus', 'scifact', 'scidocs']
     dense_model_path = f"./ckpts/biencoder-checkpoints/checkpoint-{dense_model_name}"
     reranker_model_path = f"./ckpts/crossencoder-checkpoints/checkpoint-{reranker_model_name}"
     csv_file_path = os.path.join(results_dir, f"{dense_model_name}-retriever-{reranker_model_name}-reranker.csv")
     dense_model = models.SentenceBERT(dense_model_path)
-    reranker = Rerank(CrossEncoder(reranker_model_path), batch_size=32)
+    reranker = Rerank(CrossEncoder(reranker_model_path), batch_size=64)
     with open(csv_file_path, mode="w", newline="") as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(["Dataset", f"NDCG@{top_k}", f"MAP@{top_k}", f"Recall@{top_k}", f"Precision@{top_k}", f"MRR@{top_k}"])
@@ -67,7 +67,10 @@ def evaluate(
         for dataset in datasets :
             url = f"https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/{dataset}.zip"
             out_dir = os.path.join(".", "datasets")
-            data_path = util.download_and_unzip(url, out_dir)
+            if "bioasq" != dataset:
+                data_path = util.download_and_unzip(url, out_dir)
+            else:
+                data_path = "/kaggle/input/bioasq/"
             corpus, queries, qrels = GenericDataLoader(data_folder=data_path).load(split="test")
 
             bm25_model = BM25(index_name=dataset, hostname=hostname, initialize=initialize)
