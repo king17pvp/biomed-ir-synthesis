@@ -33,14 +33,14 @@ def parse_args():
     parser.add_argument(
         "--biencoder_model_name", 
         type=str, 
-        default="checkpoint-pubmedbert",
+        default="pubmedbert",
         help="Name of the SentenceTransformer (bi-encoder) model (inside biomed-ir-synthesis/ckpts/)"
     )
 
     parser.add_argument(
         "--crossencoder_model_name", 
         type=str, 
-        default="checkpoint-pubmedbert-10000",
+        default="pubmedbert",
         help="Name of the CrossEncoder (reranker) model (inside biomed-ir-synthesis/ckpts/)"
     )
 
@@ -52,8 +52,8 @@ def evaluate(
     top_k = 50
 ):
     datasets = ['trec-covid', 'nfcorpus', 'scifact', 'scidocs']
-    dense_model_path = f"./ckpts/biencoder-checkpoints/{dense_model_name}"
-    reranker_model_path = f"./ckpts/crossencoder-checkpoints/{reranker_model_name}"
+    dense_model_path = f"./ckpts/biencoder-checkpoints/checkpoint-{dense_model_name}"
+    reranker_model_path = f"./ckpts/crossencoder-checkpoints/checkpoint-{reranker_model_name}"
     dense_model = models.SentenceBERT(dense_model_path)
     reranker = Rerank(CrossEncoder(reranker_model_path), batch_size=32)
     for dataset in datasets :
