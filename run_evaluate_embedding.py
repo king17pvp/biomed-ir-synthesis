@@ -41,7 +41,6 @@ def parse_args():
 
 def evaluate(
     dense_model_name = "checkpoint-pubmedbert", 
-    reranker_model_name = "checkpoint-pubmedbert-10000", 
     top_k = 50
 ):
     results_dir = os.path.join(".", "results")
@@ -49,7 +48,7 @@ def evaluate(
     # datasets = ['bioasq', 'trec-covid', 'nfcorpus', 'scifact', 'scidocs']
     datasets = ['trec-covid', 'nfcorpus', 'scifact', 'scidocs']
     dense_model_path = f"./ckpts/biencoder-checkpoints/checkpoint-{dense_model_name}"
-    csv_file_path = os.path.join(results_dir, f"{dense_model_name}-retriever-{reranker_model_name}-reranker.csv")
+    csv_file_path = os.path.join(results_dir, f"{dense_model_name}-retriever.csv")
     dense_model = models.SentenceBERT(dense_model_path)
     with open(csv_file_path, mode="w", newline="") as csvfile:
         writer = csv.writer(csvfile)
@@ -86,4 +85,4 @@ def evaluate(
 
 if __name__ == "__main__":
     args = parse_args()
-    evaluate(args.biencoder_model_name, args.crossencoder_model_name, args.top_k)
+    evaluate(args.biencoder_model_name, args.top_k)
