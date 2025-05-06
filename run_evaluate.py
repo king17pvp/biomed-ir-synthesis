@@ -54,7 +54,8 @@ def evaluate(
 ):
     results_dir = os.path.join(".", "results")
     os.makedirs(results_dir, exist_ok=True)
-    datasets = ['bioasq', 'trec-covid', 'nfcorpus', 'scifact', 'scidocs']
+    # datasets = ['bioasq', 'trec-covid', 'nfcorpus', 'scifact', 'scidocs']
+    datasets = ['trec-covid', 'nfcorpus', 'scifact', 'scidocs']
     dense_model_path = f"./ckpts/biencoder-checkpoints/checkpoint-{dense_model_name}"
     reranker_model_path = f"./ckpts/crossencoder-checkpoints/checkpoint-{reranker_model_name}"
     csv_file_path = os.path.join(results_dir, f"{dense_model_name}-retriever-{reranker_model_name}-reranker.csv")
