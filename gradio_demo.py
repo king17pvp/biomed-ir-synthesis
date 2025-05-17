@@ -3,6 +3,7 @@ import os
 import json
 import heapq
 
+from beir import util, LoggingHandler
 from beir.datasets.data_loader import GenericDataLoader
 from beir.retrieval import models
 from beir.reranking import Rerank
@@ -23,9 +24,11 @@ dense_model = models.SentenceBERT(DENSE_MODEL_PATH)
 cross_encoder = CrossEncoder(CROSSENCODER_MODEL_PATH)
 reranker = Rerank(cross_encoder, batch_size=64)
 bm25_model = BM25(index_name=DATASET_NAME, hostname="localhost", initialize=False)
-
+url = f"https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/{DATASET_NAME}.zip"
+out_dir = os.path.join(".", "datasets")
+data_path = util.download_and_unzip(url, out_dir)
 # Load dataset
-corpus, queries, qrels = GenericDataLoader(data_folder=f"./datasets/{DATASET_NAME}").load(split="test")
+corpus, queries, qrels = GenericDataLoader(data_folder=data_path).load(split="test")
 
 # Invert corpus for metadata display
 corpus_dict = {doc_id: doc["text"] for doc_id, doc in corpus.items()}
