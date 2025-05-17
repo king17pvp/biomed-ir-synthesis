@@ -8,7 +8,7 @@ from tools.api import *
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 load_dotenv()
-deekseek_api_key = os.getenv("DEEKSEEK_KEY")
+deekseek_api_key = os.getenv("DEEPSEEK_KEY")
 API = DeepSeekAPI(deekseek_api_key)
 data = []
 
