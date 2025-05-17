@@ -58,7 +58,7 @@ def search_biomedical_docs(user_query):
 demo = gr.Interface(
     fn=search_biomedical_docs,
     inputs=gr.Textbox(placeholder="Enter a biomedical query...", label="Query"),
-    outputs=gr.outputs.Textbox(label="Top Retrieved Passages"),
+    outputs=gr.Textbox(label="Top Retrieved Passages"),
     title="Biomedical IR Demo (PubMedBERT)",
     description=f"Hybrid search (BM25 + Dense + Cross-Encoder) over '{DATASET_NAME}' using your fine-tuned models."
 )
