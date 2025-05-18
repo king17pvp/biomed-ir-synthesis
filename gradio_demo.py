@@ -39,8 +39,8 @@ corpus_dict = {doc_id: doc["text"] for doc_id, doc in corpus.items()}
 def search_biomedical_docs(user_query):
     # Retrieval: BM25 + Dense + RRF
     dense_retriever = EvaluateRetrieval(DRES(dense_model), score_function="cos_sim", k_values=[TOP_K])
-    dense_results = dense_retriever.retrieve(corpus, {0: user_query})
-    bm25_results = bm25_model.search(corpus, {0: user_query}, TOP_K, "dot")
+    dense_results = dense_retriever.retrieve(corpus, {1: user_query})
+    bm25_results = bm25_model.search(corpus, {1: user_query}, TOP_K, "dot")
 
     rrf_results = reciprocal_rank_fusion([bm25_results, dense_results])
 
@@ -50,7 +50,7 @@ def search_biomedical_docs(user_query):
     new_corpus = {doc_id: corpus[doc_id] for doc_id in top_doc_ids}
 
     # Rerank
-    rerank_results = reranker.rerank(new_corpus, {0: user_query}, {0: {doc_id: 1.0 for doc_id in new_corpus}}, top_k=TOP_K)
+    rerank_results = reranker.rerank(new_corpus, {1: user_query}, {1: {doc_id: 1.0 for doc_id in new_corpus}}, top_k=TOP_K)
     reranked_doc_ids = [doc_id for doc_id, _ in sorted(rerank_results[0].items(), key=lambda x: x[1], reverse=True)]
 
     # Return top results
