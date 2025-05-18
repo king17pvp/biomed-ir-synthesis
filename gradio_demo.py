@@ -38,7 +38,7 @@ corpus_dict = {doc_id: doc["text"] for doc_id, doc in corpus.items()}
 # Gradio search function
 def search_biomedical_docs(user_query):
     # Retrieval: BM25 + Dense + RRF
-    query = {1: user_query}
+    query = {1: user_query, 2: "Filler"}
     dense_retriever = EvaluateRetrieval(DRES(dense_model), score_function="cos_sim", k_values=[TOP_K])
     dense_results = dense_retriever.retrieve(corpus, query)
     bm25_results = bm25_model.search(corpus, query, TOP_K, "dot")
