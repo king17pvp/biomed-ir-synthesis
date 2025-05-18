@@ -75,12 +75,12 @@ def evaluate(
             corpus, queries, qrels = GenericDataLoader(data_folder=data_path).load(split="test")
             print("Query keys: ", queries.keys())
             print("Query", queries)
-            print("Corpus", corpus)
+            # print("Corpus", corpus)
             bm25_model = BM25(index_name=dataset, hostname=hostname, initialize=initialize)
             dense_retriever = EvaluateRetrieval(DRES(dense_model), score_function= score_function, k_values=[top_k])
             dense_results = dense_retriever.retrieve(corpus, queries)
             bm25_results = bm25_model.search(corpus, queries, top_k, score_function)
-
+            
             rrf_results = reciprocal_rank_fusion([bm25_results, dense_results])
             new_corpus = {}
             for query_id in rrf_results:
