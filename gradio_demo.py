@@ -27,6 +27,8 @@ bm25_model = BM25(index_name=DATASET_NAME, hostname="localhost", initialize=Fals
 url = f"https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/{DATASET_NAME}.zip"
 out_dir = os.path.join(".", "datasets")
 data_path = util.download_and_unzip(url, out_dir)
+score_function = "cos_sim"
+hostname = "localhost"
 # Load dataset
 corpus, queries, qrels = GenericDataLoader(data_folder=data_path).load(split="test")
 
@@ -37,8 +39,8 @@ corpus_dict = {doc_id: doc["text"] for doc_id, doc in corpus.items()}
 def search_biomedical_docs(user_query):
     # Retrieval: BM25 + Dense + RRF
     dense_retriever = EvaluateRetrieval(DRES(dense_model), score_function="cos_sim", k_values=[TOP_K])
-    dense_results = dense_retriever.retrieve(corpus, {0: user_query})
-    bm25_results = bm25_model.search(corpus, {0: user_query}, TOP_K, "dot")
+    dense_results = dense_retriever.retrieve(corpus, [{0: user_query}])
+    bm25_results = bm25_model.search(corpus, [{0: user_query}], TOP_K, "dot")
 
     rrf_results = reciprocal_rank_fusion([bm25_results, dense_results])
 
